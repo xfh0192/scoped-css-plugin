@@ -1,3 +1,4 @@
+const RuleSet = require('webpack/lib/RuleSet')
 
 class ScopedCssPlugin {
   constructor(options = {}) {
@@ -18,8 +19,8 @@ class ScopedCssPlugin {
     //   console.log(compilation)
     // });
     compiler.hooks.afterCompile.tap('MyPlugin', (compilation, compilationParams) => {
-      console.log(compiler)
-      console.log(compilation)
+      // console.log(compiler)
+      // console.log(compilation)
     });
     // compiler.hooks.shouldEmit.tap('MyPlugin', (compilation, compilationParams) => {
     //   console.log(compiler)
@@ -34,6 +35,17 @@ class ScopedCssPlugin {
       //   })
       // })
     // })
+
+
+    // =========
+
+    // 注入loader
+    // use webpack's RuleSet utility to normalize user rules
+    debugger
+    const rawRules = compiler.options.module.rules
+    const { rules } = new RuleSet(rawRules)
+
+    console.log(rules)
   }
 }
 

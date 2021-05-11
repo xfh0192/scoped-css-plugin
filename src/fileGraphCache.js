@@ -13,5 +13,7 @@ module.exports.setFileHashKey = function(filePath) {
     console.warn(`duplicate file hash key: ${filePath}, invalid setting`)
     return
   }
-  fileGraph[filePath] = hash(filePath)
+  let hashStr = hash(filePath)
+  fileGraph[filePath] = hashStr
+  return hashStr
 }
