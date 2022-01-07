@@ -1,19 +1,24 @@
 const path = require('path')
-const { setFileHashKey } = require('../fileGraphCache')
+const { getFileHashKey, setFileHashKey, getMap } = require('../fileGraphCache')
 
 module.exports = function(source) {
+  let context = this.context
+  let dirParse = path.parse(context)
+  let dirName = dirParse.name
+  
+  let fileName = path.win32.basename(this.resourcePath).replace(/(.*)\.(jsx?)$/, '$1')
+  if (fileName !== 'index') {
+    return source
+  }
+
+  let hash = getFileHashKey(context)
+  // let a = getMap()
+  if (!hash) {
+    hash = setFileHashKey(context)
+  }
+  
+  let result = source.replace(new RegExp(`(className='.*${dirName}.*')>`, 'ig'), `$1 data-css-${hash}>`)
   // debugger
 
-  // let context = this.context
-  // let dirParse = path.parse(context)
-  // let dirName = dirParse.name
-  
-  // let filePath = this.resourcePath
-
-  // let hashStr = setFileHashKey(filePath)
-  
-  // let result = source.replace(new RegExp(`\.${dirName}`), className => `${className}_${hashStr}`)
-  // return result
-
-  return source
+  return result
 }

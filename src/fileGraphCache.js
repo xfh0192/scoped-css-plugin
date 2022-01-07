@@ -1,19 +1,23 @@
 const hash = require('hash-sum')
 
-let fileGraph = {
-  // filePath: hash
+let fileHashMap = {
+  // format -> filePath: hash
+  // exp: dist/src/index: 9e3c5t
 }
 
+module.exports.getMap = function() {
+  return fileHashMap
+}
 module.exports.getFileHashKey = function(filePath) {
-  return fileGraph[filePath]
+  return fileHashMap[filePath]
 }
 
 module.exports.setFileHashKey = function(filePath) {
-  if (fileGraph[filePath]) {
+  if (fileHashMap[filePath]) {
     console.warn(`duplicate file hash key: ${filePath}, invalid setting`)
     return
   }
   let hashStr = hash(filePath)
-  fileGraph[filePath] = hashStr
+  fileHashMap[filePath] = hashStr
   return hashStr
 }
